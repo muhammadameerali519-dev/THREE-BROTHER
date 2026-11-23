@@ -1,0 +1,6 @@
+{
+  "name": "THREE BROTHERS",
+  "description": "Premium international electronics and technology eCommerce store featuring flagship smartphones, studio laptops, audio hardware, smartwatches, and instant WhatsApp ordering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
