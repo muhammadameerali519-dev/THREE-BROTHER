@@ -315,7 +315,7 @@ export function StoreProvider({children}: {children: React.ReactNode}) {
 
   const cartDelivery = useMemo(() => {
     if (cart.length === 0) return 0;
-    return discountedItemsTotal >= 250 ? 0 : 15;
+    return discountedItemsTotal >= 70000 ? 0 : 2500;
   }, [cart.length, discountedItemsTotal]);
 
   const cartGrandTotal = useMemo(

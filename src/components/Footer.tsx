@@ -122,7 +122,7 @@ export function Footer() {
                 <SquircleIcon icon={MessageCircle} size="xs" variant="emerald" />
                 <div>
                   <p className="text-white font-medium">WhatsApp Ordering</p>
-                  <p className="font-mono text-xs tabular-nums">+93703842099</p>
+                  <p className="font-mono text-xs tabular-nums">+923328189905</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">

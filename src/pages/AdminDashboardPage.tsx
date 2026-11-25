@@ -150,8 +150,8 @@ export function AdminDashboardPage() {
       title: '',
       brand_id: brands[0]?.id || '',
       category_id: categories[0]?.id || '',
-      original_price: 999,
-      discount_price: 899,
+      original_price: 45000,
+      discount_price: 39900,
       stock: 10,
       sku: '',
       short_description: '',
@@ -1006,11 +1006,11 @@ export function AdminDashboardPage() {
 
             <div className="grid grid-cols-3 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Original Price ($)</label>
+                <label className="text-xs font-semibold text-slate-700">Original Price (PKR)</label>
                 <input
                   type="number"
                   min={0}
-                  step="0.01"
+                  step="1"
                   required
                   value={editingProduct.original_price ?? 0}
                   onChange={(e) => setEditingProduct({...editingProduct, original_price: Number(e.target.value)})}
@@ -1018,11 +1018,11 @@ export function AdminDashboardPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Discount Price ($)</label>
+                <label className="text-xs font-semibold text-slate-700">Discount Price (PKR)</label>
                 <input
                   type="number"
                   min={0}
-                  step="0.01"
+                  step="1"
                   required
                   value={editingProduct.discount_price ?? 0}
                   onChange={(e) => setEditingProduct({...editingProduct, discount_price: Number(e.target.value)})}

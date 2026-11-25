@@ -14,7 +14,71 @@ const IMG_ACCESSORIES = '/src/assets/images/product_smart_accessories_1795408033
 
 export function seedDatabaseIfEmpty(): void {
   const categoryCount = (db.prepare('SELECT COUNT(*) as count FROM categories').get() as {count: number}).count;
-  if (categoryCount > 0) return;
+  if (categoryCount > 0) {
+    const currencySetting = db
+      .prepare("SELECT value FROM store_settings WHERE key = 'currency_code'")
+      .get() as {value: string} | undefined;
+
+    if (currencySetting?.value !== 'PKR') {
+      const migrateToPkr = db.transaction(() => {
+        const allProds = db
+          .prepare('SELECT id, original_price, discount_price FROM products')
+          .all() as {id: string; original_price: number; discount_price: number}[];
+        const updateProd = db.prepare('UPDATE products SET original_price = ?, discount_price = ? WHERE id = ?');
+        for (const p of allProds) {
+          if (p.original_price < 15000) {
+            const origPkr = Math.round((p.original_price * 280) / 100) * 100;
+            const discPkr = Math.round((p.discount_price * 280) / 100) * 100;
+            updateProd.run(origPkr, discPkr, p.id);
+          }
+        }
+
+        const allOrders = db
+          .prepare('SELECT id, items, subtotal, discount_total, delivery_charges, grand_total FROM orders')
+          .all() as {
+          id: string;
+          items: string;
+          subtotal: number;
+          discount_total: number;
+          delivery_charges: number;
+          grand_total: number;
+        }[];
+        const updateOrder = db.prepare(
+          'UPDATE orders SET items = ?, subtotal = ?, discount_total = ?, delivery_charges = ?, grand_total = ? WHERE id = ?',
+        );
+        for (const ord of allOrders) {
+          if (ord.grand_total < 20000) {
+            let parsedItems: Array<Record<string, unknown>> = [];
+            try {
+              parsedItems = JSON.parse(ord.items || '[]');
+            } catch {
+              parsedItems = [];
+            }
+            const convertedItems = parsedItems.map((it) => {
+              const orig = Math.round((Number(it.original_price || 0) * 280) / 100) * 100;
+              const unit = Math.round((Number(it.unit_price || 0) * 280) / 100) * 100;
+              const qty = Number(it.quantity || 1);
+              return {
+                ...it,
+                original_price: orig,
+                unit_price: unit,
+                line_total: unit * qty,
+              };
+            });
+            const sub = Math.round((ord.subtotal * 280) / 100) * 100;
+            const disc = Math.round((ord.discount_total * 280) / 100) * 100;
+            const deliv = ord.delivery_charges === 0 ? 0 : 2500;
+            const grand = Math.max(0, sub - disc) + deliv;
+            updateOrder.run(JSON.stringify(convertedItems), sub, disc, deliv, grand, ord.id);
+          }
+        }
+
+        db.prepare("INSERT OR REPLACE INTO store_settings (key, value) VALUES ('currency_code', 'PKR')").run();
+      });
+      migrateToPkr();
+    }
+    return;
+  }
 
   const now = new Date().toISOString();
 
@@ -213,8 +277,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Apple',
       category_id: 'cat-smartphones',
       category_name: 'Smartphones',
-      original_price: 1299,
-      discount_price: 1199,
+      original_price: 364000,
+      discount_price: 336000,
       stock: 18,
       sku: 'TB-APL-17PM-256',
       short_description: 'Grade-5 brushed titanium chassis, 5x optical tetraprism lens, and A19 Pro neural engine.',
@@ -245,8 +309,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Samsung',
       category_id: 'cat-smartphones',
       category_name: 'Smartphones',
-      original_price: 1349,
-      discount_price: 1189,
+      original_price: 378000,
+      discount_price: 333000,
       stock: 14,
       sku: 'TB-SAM-S26U-512',
       short_description: '200MP Quad-Telephoto sensor, anti-reflective Gorilla Armor glass, and precision S-Pen.',
@@ -276,8 +340,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Apple',
       category_id: 'cat-laptops',
       category_name: 'Laptops',
-      original_price: 3499,
-      discount_price: 3249,
+      original_price: 980000,
+      discount_price: 910000,
       stock: 9,
       sku: 'TB-APL-MBP16-M4M',
       short_description: '16-inch Liquid Retina XDR mini-LED workstation with 36GB unified memory and 1TB SSD.',
@@ -307,8 +371,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Dell',
       category_id: 'cat-laptops',
       category_name: 'Laptops',
-      original_price: 1999,
-      discount_price: 1749,
+      original_price: 560000,
+      discount_price: 490000,
       stock: 12,
       sku: 'TB-DEL-XPS14-OLED',
       short_description: 'CNC-machined aluminum ultrabook with 3.2K OLED touch glass and RTX graphics.',
@@ -337,8 +401,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Sony',
       category_id: 'cat-headphones',
       category_name: 'Headphones',
-      original_price: 449,
-      discount_price: 389,
+      original_price: 126000,
+      discount_price: 109000,
       stock: 27,
       sku: 'TB-SON-XM6-SLV',
       short_description: 'Dual-processor adaptive noise cancellation, 40-hour battery, and LDAC lossless wireless.',
@@ -367,8 +431,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Bowers & Wilkins',
       category_id: 'cat-headphones',
       category_name: 'Headphones',
-      original_price: 699,
-      discount_price: 629,
+      original_price: 196000,
+      discount_price: 176000,
       stock: 11,
       sku: 'TB-BW-PX8-OBS',
       short_description: '40mm Carbon Cone drivers, cast aluminum arms, and Nappa leather acoustic cups.',
@@ -397,8 +461,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Apple',
       category_id: 'cat-smart-watches',
       category_name: 'Smart Watches',
-      original_price: 849,
-      discount_price: 789,
+      original_price: 238000,
+      discount_price: 221000,
       stock: 22,
       sku: 'TB-APL-WU3-TIT',
       short_description: '49mm rugged titanium case, 3000-nit flat sapphire display, and dual-frequency L1+L5 GPS.',
@@ -427,8 +491,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Sony',
       category_id: 'cat-wireless-earbuds',
       category_name: 'Wireless Earbuds',
-      original_price: 319,
-      discount_price: 259,
+      original_price: 89500,
+      discount_price: 72500,
       stock: 35,
       sku: 'TB-SON-WF5-PRL',
       short_description: 'Dynamic Driver X acoustic isolation, bone-conduction calls, and Qi wireless pocket case.',
@@ -457,8 +521,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Sony',
       category_id: 'cat-cameras',
       category_name: 'Cameras',
-      original_price: 3899,
-      discount_price: 3599,
+      original_price: 1092000,
+      discount_price: 1008000,
       stock: 5,
       sku: 'TB-SON-FX3-CIN',
       short_description: '10.2MP full-frame Exmor R sensor, 15+ stops dynamic range, and S-Cinetone 4K120p.',
@@ -487,8 +551,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Bowers & Wilkins',
       category_id: 'cat-speakers',
       category_name: 'Speakers',
-      original_price: 799,
-      discount_price: 699,
+      original_price: 224000,
+      discount_price: 196000,
       stock: 13,
       sku: 'TB-BW-ACOU-01',
       short_description: '240W 5-driver room-filling wireless speaker with AirPlay 2 and precision milled dial.',
@@ -516,8 +580,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'ASUS',
       category_id: 'cat-gaming-accessories',
       category_name: 'Gaming Accessories',
-      original_price: 429,
-      discount_price: 369,
+      original_price: 120000,
+      discount_price: 103500,
       stock: 19,
       sku: 'TB-ASU-GAM-PRO',
       short_description: 'Gasket-mounted CNC aluminum mechanical keyboard paired with tri-mode pro controller.',
@@ -545,8 +609,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'LG',
       category_id: 'cat-tvs-displays',
       category_name: 'TVs & Displays',
-      original_price: 1499,
-      discount_price: 1299,
+      original_price: 420000,
+      discount_price: 364000,
       stock: 8,
       sku: 'TB-LG-32OLED-PRO',
       short_description: 'Self-lit 4K 240Hz OLED panel with milled aluminum stand and 99% DCI-P3 calibration.',
@@ -575,8 +639,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Apple',
       category_id: 'cat-computers',
       category_name: 'Computers',
-      original_price: 2299,
-      discount_price: 2149,
+      original_price: 644000,
+      discount_price: 602000,
       stock: 7,
       sku: 'TB-APL-MSTD-64',
       short_description: 'Compact brushed aluminum desktop tower with 64GB unified memory and 10Gb Ethernet.',
@@ -604,8 +668,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Dyson',
       category_id: 'cat-home-appliances',
       category_name: 'Home Appliances',
-      original_price: 899,
-      discount_price: 799,
+      original_price: 252000,
+      discount_price: 224000,
       stock: 10,
       sku: 'TB-DYS-PUR-01',
       short_description: 'HEPA H13 whole-room acoustic purification capturing 99.97% of ultrafine particles.',
@@ -633,8 +697,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Anker',
       category_id: 'cat-chargers-cables',
       category_name: 'Chargers & Cables',
-      original_price: 129,
-      discount_price: 99,
+      original_price: 36000,
+      discount_price: 27700,
       stock: 48,
       sku: 'TB-ANK-GAN140',
       short_description: 'GaNPrime 4-port desktop fast charger bundled with 240W braided USB-C cable.',
@@ -662,8 +726,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Samsung',
       category_id: 'cat-smart-home-devices',
       category_name: 'Smart Home Devices',
-      original_price: 199,
-      discount_price: 169,
+      original_price: 55700,
+      discount_price: 47300,
       stock: 25,
       sku: 'TB-SAM-HUB-MT',
       short_description: 'Unified Thread, Zigbee, and Matter border router with ambient floor illumination.',
@@ -691,8 +755,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Keychron',
       category_id: 'cat-computer-accessories',
       category_name: 'Computer Accessories',
-      original_price: 219,
-      discount_price: 189,
+      original_price: 61300,
+      discount_price: 52900,
       stock: 20,
       sku: 'TB-KEY-Q1P-BLK',
       short_description: 'Full CNC 6063 aluminum 75% wireless QMK/VIA custom mechanical studio keyboard.',
@@ -720,8 +784,8 @@ export function seedDatabaseIfEmpty(): void {
       brand_name: 'Anker',
       category_id: 'cat-mobile-accessories',
       category_name: 'Mobile Accessories',
-      original_price: 149,
-      discount_price: 119,
+      original_price: 41700,
+      discount_price: 33300,
       stock: 40,
       sku: 'TB-ANK-MAG-ARM',
       short_description: 'Ultra-thin Qi2 15W magnetic slim battery paired with woven aramid protective shell.',
@@ -862,15 +926,15 @@ export function seedDatabaseIfEmpty(): void {
           sku: 'TB-APL-17PM-256',
           image: IMG_PHONE,
           quantity: 1,
-          original_price: 1299,
-          unit_price: 1199,
-          line_total: 1199,
+          original_price: 364000,
+          unit_price: 336000,
+          line_total: 336000,
         },
       ]),
-      subtotal: 1299,
-      discount_total: 100,
+      subtotal: 364000,
+      discount_total: 28000,
       delivery_charges: 0,
-      grand_total: 1199,
+      grand_total: 336000,
       status: 'Shipped',
       created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
       updated_at: new Date(Date.now() - 3600000 * 6).toISOString(),
@@ -893,15 +957,15 @@ export function seedDatabaseIfEmpty(): void {
           sku: 'TB-SON-XM6-SLV',
           image: IMG_HEADPHONES,
           quantity: 2,
-          original_price: 449,
-          unit_price: 389,
-          line_total: 778,
+          original_price: 126000,
+          unit_price: 109000,
+          line_total: 218000,
         },
       ]),
-      subtotal: 898,
-      discount_total: 120,
+      subtotal: 252000,
+      discount_total: 34000,
       delivery_charges: 0,
-      grand_total: 778,
+      grand_total: 218000,
       status: 'Confirmed',
       created_at: new Date(Date.now() - 86400000).toISOString(),
       updated_at: new Date(Date.now() - 3600000 * 2).toISOString(),
@@ -939,6 +1003,7 @@ export function seedDatabaseIfEmpty(): void {
     for (const o of sampleOrders) {
       insertOrder.run(o);
     }
+    db.prepare("INSERT OR REPLACE INTO store_settings (key, value) VALUES ('currency_code', 'PKR')").run();
   });
 
   runSeed();

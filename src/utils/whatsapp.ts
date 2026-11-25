@@ -1,12 +1,9 @@
 import type {Order} from '../types.ts';
 
-export const WHATSAPP_NUMBER = '93703842099';
+export const WHATSAPP_NUMBER = '923328189905';
 
 export function formatCurrency(amount: number): string {
-  return `$${Number(amount || 0).toLocaleString('en-US', {
-    minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
-    maximumFractionDigits: 2,
-  })}`;
+  return `PKR ${Math.round(Number(amount || 0)).toLocaleString('en-US')}`;
 }
 
 export function buildWhatsAppOrderMessage(order: Order): string {
@@ -37,7 +34,7 @@ export function buildWhatsAppOrderMessage(order: Order): string {
     '',
     `Subtotal: ${formatCurrency(order.subtotal)}`,
     `Discount: -${formatCurrency(order.discount_total)}`,
-    `Delivery Charges: ${order.delivery_charges === 0 ? 'FREE ($0)' : formatCurrency(order.delivery_charges)}`,
+    `Delivery Charges: ${order.delivery_charges === 0 ? 'FREE (PKR 0)' : formatCurrency(order.delivery_charges)}`,
     `Grand Total: ${formatCurrency(order.grand_total)}`,
     '',
     `Order Status: ${order.status}.`,

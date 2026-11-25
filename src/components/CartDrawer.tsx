@@ -21,7 +21,7 @@ export function CartDrawer() {
   } = useStore();
 
   const discountedItemsTotal = cartSubtotal - cartDiscount;
-  const freeShippingRemaining = Math.max(0, 250 - discountedItemsTotal);
+  const freeShippingRemaining = Math.max(0, 70000 - discountedItemsTotal);
 
   return (
     <AnimatePresence>
@@ -74,13 +74,13 @@ export function CartDrawer() {
                       : `Add ${formatCurrency(freeShippingRemaining)} more for free express delivery`}
                   </span>
                   <span className="font-mono text-slate-900 font-semibold tabular-nums shrink-0">
-                    {Math.min(100, Math.round((discountedItemsTotal / 250) * 100))}%
+                    {Math.min(100, Math.round((discountedItemsTotal / 70000) * 100))}%
                   </span>
                 </div>
                 <div className="h-1.5 w-full rounded-full bg-white/60 overflow-hidden border border-white/70">
                   <div
                     className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300"
-                    style={{width: `${Math.min(100, (discountedItemsTotal / 250) * 100)}%`}}
+                    style={{width: `${Math.min(100, (discountedItemsTotal / 70000) * 100)}%`}}
                   />
                 </div>
               </div>

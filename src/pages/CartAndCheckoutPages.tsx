@@ -303,7 +303,7 @@ export function CheckoutPage() {
                 Order Ready for WhatsApp Confirmation
               </h1>
               <p className="text-sm text-slate-600 mt-1">
-                Your order has been logged in our system. Tap the button below to send your complete order dispatch directly to our WhatsApp desk (+93703842099).
+                Your order has been logged in our system. Tap the button below to send your complete order dispatch directly to our WhatsApp desk (+923328189905).
               </p>
             </div>
           </div>
@@ -379,7 +379,7 @@ export function CheckoutPage() {
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-12 space-y-8">
       <div className="rounded-[26px] glass-panel p-6 sm:p-8">
-        <p className="text-xs font-semibold text-blue-700 mb-1">Direct Concierge Dispatch · +93703842099</p>
+        <p className="text-xs font-semibold text-blue-700 mb-1">Direct Concierge Dispatch · +923328189905</p>
         <h1 className="font-display font-bold text-2xl sm:text-3xl text-slate-900">WhatsApp Express Checkout</h1>
       </div>
 
@@ -406,7 +406,7 @@ export function CheckoutPage() {
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+93 70 000 0000"
+                placeholder="+92 300 000 0000"
                 className="w-full h-11 px-3.5 rounded-[13px] glass-input text-sm"
               />
             </div>
@@ -501,7 +501,7 @@ export function CheckoutPage() {
             <div className="flex justify-between text-slate-700">
               <span>Delivery Charges</span>
               <span className="font-mono tabular-nums">
-                {cartDelivery === 0 ? 'FREE ($0)' : formatCurrency(cartDelivery)}
+                {cartDelivery === 0 ? 'FREE (PKR 0)' : formatCurrency(cartDelivery)}
               </span>
             </div>
             <div className="pt-2 border-t border-white/65 flex justify-between font-display font-bold text-lg text-slate-900">
@@ -516,7 +516,7 @@ export function CheckoutPage() {
           </GlassButton>
 
           <p className="text-xs text-slate-600 text-center">
-            Orders are verified in real time with our concierge team at +93703842099.
+            Orders are verified in real time with our concierge team at +923328189905.
           </p>
         </div>
       </form>

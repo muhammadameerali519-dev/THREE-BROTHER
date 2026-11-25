@@ -24,7 +24,7 @@ export function ShopPage({mode = 'shop'}: {mode?: 'shop' | 'products' | 'deals'}
     navigate,
   } = useStore();
 
-  const [maxPrice, setMaxPrice] = useState<number>(4500);
+  const [maxPrice, setMaxPrice] = useState<number>(1200000);
   const [inStockOnly, setInStockOnly] = useState(false);
 
   const searchQ = (shopFilters.search || '').trim().toLowerCase();
@@ -89,7 +89,7 @@ export function ShopPage({mode = 'shop'}: {mode?: 'shop' | 'products' | 'deals'}
 
   const resetFilters = () => {
     setShopFilters({sortBy: 'featured'});
-    setMaxPrice(4500);
+    setMaxPrice(1200000);
     setInStockOnly(false);
   };
 
@@ -205,9 +205,9 @@ export function ShopPage({mode = 'shop'}: {mode?: 'shop' | 'products' | 'deals'}
             </div>
             <input
               type="range"
-              min={100}
-              max={4500}
-              step={50}
+              min={10000}
+              max={1200000}
+              step={5000}
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               className="w-full accent-blue-600 cursor-pointer"

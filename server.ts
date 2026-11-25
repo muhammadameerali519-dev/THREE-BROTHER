@@ -394,7 +394,7 @@ async function startServer() {
         }
 
         const discountTotal = Number(Math.max(0, subtotal - discountedSum).toFixed(2));
-        const deliveryCharges = discountedSum >= 250 ? 0 : 15;
+        const deliveryCharges = discountedSum >= 70000 ? 0 : 2500;
         const grandTotal = Number((discountedSum + deliveryCharges).toFixed(2));
 
         const countRow = db.prepare('SELECT COUNT(*) as total FROM orders').get() as {total: number};

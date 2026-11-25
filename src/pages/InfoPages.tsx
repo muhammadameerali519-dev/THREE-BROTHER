@@ -133,7 +133,7 @@ export function ContactPage() {
             <p className="text-sm text-slate-300">
               Speak directly with our product specialists for immediate stock confirmation and courier scheduling.
             </p>
-            <p className="font-mono text-lg font-bold tabular-nums">+93703842099</p>
+            <p className="font-mono text-lg font-bold tabular-nums">+923328189905</p>
             <motion.a
               whileHover={{y: -1}}
               whileTap={{scale: 0.98}}
@@ -231,7 +231,7 @@ export function FaqPage() {
   const faqs = [
     {
       q: 'How does WhatsApp order confirmation work?',
-      a: 'After completing the checkout form, your order is securely logged with a unique reference number (e.g., TB-2026-1001). Tapping "CONFIRM ORDER VIA WHATSAPP" opens WhatsApp pre-filled with your exact items, totals, and delivery details to +93703842099 so our team can confirm dispatch immediately.',
+      a: 'After completing the checkout form, your order is securely logged with a unique reference number (e.g., TB-2026-1001). Tapping "CONFIRM ORDER VIA WHATSAPP" opens WhatsApp pre-filled with your exact items, totals, and delivery details to +923328189905 so our team can confirm dispatch immediately.',
     },
     {
       q: 'Are all products factory sealed and authentic?',
@@ -243,7 +243,7 @@ export function FaqPage() {
     },
     {
       q: 'How much are delivery charges and how long does shipping take?',
-      a: 'Orders of $250 or more qualify for complimentary insured express delivery. Orders under $250 carry a flat $15 insured delivery fee. Same-day dispatch is available in major hubs.',
+      a: 'Orders of PKR 70,000 or more qualify for complimentary insured express delivery. Orders under PKR 70,000 carry a flat PKR 2,500 insured delivery fee. Same-day dispatch is available in major hubs.',
     },
     {
       q: 'How can I track my order status?',
@@ -470,11 +470,11 @@ export function TermsPage() {
       </div>
       <div className="rounded-[28px] glass-panel p-6 sm:p-10 space-y-5 text-sm text-slate-700 leading-relaxed">
         <p>
-          By placing an order through the THREE BROTHERS storefront or confirming via our official WhatsApp concierge (+93703842099), you agree to the following commercial terms.
+          By placing an order through the THREE BROTHERS storefront or confirming via our official WhatsApp concierge (+923328189905), you agree to the following commercial terms.
         </p>
         <h2 className="font-display font-semibold text-lg text-slate-900">Order Confirmation & Pricing</h2>
         <p>
-          All orders placed online are held with status "Pending Confirmation" until verified by our dispatch specialist via WhatsApp. Prices include promotional discounts displayed at checkout; orders over $250 receive complimentary insured courier delivery.
+          All orders placed online are held with status "Pending Confirmation" until verified by our dispatch specialist via WhatsApp. All prices are listed in PKR and include promotional discounts displayed at checkout; orders over PKR 70,000 receive complimentary insured courier delivery.
         </p>
         <h2 className="font-display font-semibold text-lg text-slate-900">Warranty & Returns</h2>
         <p>

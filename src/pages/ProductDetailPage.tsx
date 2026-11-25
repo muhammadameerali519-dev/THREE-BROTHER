@@ -347,11 +347,11 @@ export function ProductDetailPage({slug}: {slug: string}) {
             </div>
             <div className="flex items-center gap-2.5">
               <SquircleIcon icon={Truck} size="xs" variant="glass" />
-              <span>Free insured express delivery on orders over $250</span>
+              <span>Free insured express delivery on orders over PKR 70,000</span>
             </div>
             <div className="flex items-center gap-2.5">
               <SquircleIcon icon={CheckCircle2} size="xs" variant="glass" />
-              <span>Instant WhatsApp confirmation via +93703842099</span>
+              <span>Instant WhatsApp confirmation via +923328189905</span>
             </div>
           </div>
         </div>

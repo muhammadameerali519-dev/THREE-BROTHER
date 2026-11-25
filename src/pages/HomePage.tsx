@@ -433,12 +433,12 @@ export function HomePage() {
             {
               icon: Truck,
               title: 'Insured Express Courier',
-              desc: 'Complimentary insured express delivery on orders above $250 with milestone tracking.',
+              desc: 'Complimentary insured express delivery on orders above PKR 70,000 with milestone tracking.',
             },
             {
               icon: MessageCircle,
               title: 'Direct WhatsApp Concierge',
-              desc: 'Instant human order confirmation and specialist hardware guidance on +93703842099.',
+              desc: 'Instant human order confirmation and specialist hardware guidance on +923328189905.',
             },
           ].map((item) => (
             <div key={item.title} className="rounded-[24px] glass-panel p-5 sm:p-6 space-y-3.5 group">
